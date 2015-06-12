@@ -2,6 +2,7 @@
 *
 
 # Except what I want
+README.md
 !.gitignore
 !.vimrc
 !.config
