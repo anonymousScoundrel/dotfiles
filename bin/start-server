@@ -2,17 +2,24 @@
 
 # Check if the right number or arguments are present
 arg-check () {
-    if [ $# -eq 1 ]
+    # Check if any argument was passed
+    if [ -z "$1" ]
     then
+        # This is okay we will default to /var/www/html then
         return 0
     else
-        echo Too many or two few arguments provided
-        return 1
+        if [ ! $# -gt 1 ] 
+        then
+            return 0
+        else
+            echo Too many arguments provided
+            return 1
+        fi
     fi
 }
 
 # Check args and continue or exit as appropriate
-if arg-check "$@" 
+if arg-check $@ 
 then
     print
 else
@@ -28,12 +35,12 @@ is-sql-running () {
     else
         /etc/init.d/mysql start       
     fi
-    exit 0
+    return 0
 }
 
 # Check if the directory exist in /var/www and creates a symbolic link if necessary
  ln-to-web-root () {
-    if [ -d $1 ]
+    if [ ! -z "$1" ] && [ -d $1 ]
     then
         # Apache will now serve the value of $1 as web root 
         ln -sfn $1 /var/www/html 
@@ -52,8 +59,9 @@ is-sql-running () {
 
 # Check to make sure there is a default html dir inside /var/www
 web-root-exists () {
-    if [ -d /var/www/html ]
+    if [ -e "/var/www/html" ]
     then
+        # check to make sure /var/www/html actually exists
         echo "$1 is not a valid directory; using default"
         return 0
     else

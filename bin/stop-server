@@ -1,0 +1,12 @@
+#!/bin/bash
+
+pgrep apache2 > /dev/null
+if [ $? -eq 0 ]
+then
+    service apache2 stop
+    exit 0
+else
+    echo "Server process not running"
+    exit 1
+fi
+
