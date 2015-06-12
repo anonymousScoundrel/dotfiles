@@ -1,0 +1,12 @@
+# Ignore everything
+*
+
+# Except what I want
+!.gitignore
+!.vimrc
+!.config
+!.zshrc
+!bin
+!bin/*
+!.bashrc
+!.taskrc

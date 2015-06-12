@@ -1,0 +1,83 @@
+#!/bin/bash
+
+# Check if the right number or arguments are present
+arg-check () {
+    if [ $# -eq 1 ]
+    then
+        return 0
+    else
+        echo Too many or two few arguments provided
+        return 1
+    fi
+}
+
+# Check args and continue or exit as appropriate
+if arg-check "$@" 
+then
+    print
+else
+    exit 1
+fi
+
+# Checks if mysqld is running, starting or restarting as necessary
+is-sql-running () {
+    pgrep mysqld > /dev/null
+    if [ $? -eq 0 ]
+    then
+        /etc/init.d/mysql restart
+    else
+        /etc/init.d/mysql start       
+    fi
+    exit 0
+}
+
+# Check if the directory exist in /var/www and creates a symbolic link if necessary
+ ln-to-web-root () {
+    if [ -d $1 ]
+    then
+        # Apache will now serve the value of $1 as web root 
+        ln -sfn $1 /var/www/html 
+        return 0 
+    else
+        # Default to using /var/www/html
+        # but first check that the default exists 
+        if web-root-exists $1 
+        then
+            return 1
+        else
+            exit 1
+        fi
+    fi
+}
+
+# Check to make sure there is a default html dir inside /var/www
+web-root-exists () {
+    if [ -d /var/www/html ]
+    then
+        echo "$1 is not a valid directory; using default"
+        return 0
+    else
+        echo "Error: no default web root exists"
+        return 1
+    fi
+}
+
+# Check to see if apache is running
+pgrep apache2 > /dev/null
+if [ $? -eq 0 ]
+then
+    # set web root as necessary
+    ln-to-web-root $1
+    # server is running, reboot with appropriate ln -s
+    service apache2 restart
+    is-sql-running
+else
+    # set web root as necessary
+    ln-to-web-root $1
+    # server is not running, start it with appropriate ln -s
+    service apache2 start
+    is-sql-running
+fi
+
+# All is good
+exit 0
