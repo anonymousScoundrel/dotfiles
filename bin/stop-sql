@@ -1,4 +1,12 @@
 #!/bin/bash --
 
-/etc/init.d/mysql stop
+pgrep mysqld > /dev/null
+if [ $? -eq 0 ]
+then
+    /etc/init.d/mysql stop
+    exit 0
+else
+    echo "mysql process not running"
+    exit 1
+fi
 

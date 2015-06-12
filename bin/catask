@@ -1,5 +1,5 @@
 #!/bin/bash --
 
 # Clear the screen and run task warrior
-clear;
-task;
+clear
+task
