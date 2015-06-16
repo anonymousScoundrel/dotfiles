@@ -2,6 +2,7 @@ syntax enable "enable syntax processing
 syntax on
 set tabstop=4 "set 4 visual spaces per tab
 set softtabstop=4 "number of spaces in tab when editing
+set shiftwidth=4
 set expandtab "tabs are represented by spaces
 set number "show line numbers
 set showcmd "show command in bottom bar
