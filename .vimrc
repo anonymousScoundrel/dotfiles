@@ -8,6 +8,7 @@ set number "show line numbers
 set showcmd "show command in bottom bar
 "set cursorline "highlight current line
 filetype indent on "load filetype-specific indent files
+set wildmode=longest,list,full
 set wildmenu "visual autocomplete for command menu
 set lazyredraw "redraw only when needed
 set showmatch "highlight matching [{()}]
