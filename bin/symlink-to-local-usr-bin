@@ -1,0 +1,21 @@
+#!/bin/sh
+# Because remembering the correct order is hard,
+# and making a mistake here can be tragic.
+
+# Make sure only one argument is passed
+if [ $# -eq 1 ]
+then
+    # Make sure source file exists
+    if [ -e $PWD/$1 ]
+    then
+        echo "Symlinking $PWD/$1 to /usr/local/bin/$1"
+        ln -s $PWD/$1 /usr/local/bin/$1
+        exit 0
+    else
+        echo "$1 not found in $PWD"
+        exit 1
+    fi
+else
+    echo 'This command accepts exactly one argument.'
+    exit 1
+fi
