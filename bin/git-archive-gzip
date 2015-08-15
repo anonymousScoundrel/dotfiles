@@ -14,7 +14,7 @@ then
         echo "$PWD is not tracked or ignored."
         exit 1
     else
-        BRCH=$( git branch 2> /dev/null | sed -r 's/\*\s//' )
+        BRCH=$( git branch 2> /dev/null | perl -ne 'print $1 if s/^\*\s(.+)$//' )
         echo "Archiving $BRCH branch to $PWD/git-archive-$BRCH.tar.gz"
         git archive --format=tar.gz $BRCH --output git-archive-$BRCH.tar.gz
         exit 0
